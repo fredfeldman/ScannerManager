@@ -1,0 +1,27 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Aa]rtifacts/
+
+# Visual Studio and .NET user state
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Test output and coverage
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+
+# IDE/editor state
+.vscode/
+.idea/
+
+# NuGet packages
+*.nupkg
+*.snupkg

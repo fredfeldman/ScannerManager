@@ -1,0 +1,245 @@
+﻿<Window x:Class="SDS200_ControlApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SDS200_ControlApp"
+        mc:Ignorable="d"
+        Title="SDS200 Control App" Height="720" Width="900"
+        Closing="Window_Closing">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="Scanner Connection" Padding="10">
+            <StackPanel>
+                <WrapPanel VerticalAlignment="Center">
+                    <Label Content="COM port" VerticalAlignment="Center" />
+                    <ComboBox x:Name="PortComboBox" Width="120" Margin="0,0,12,0" />
+                    <Label Content="Baud" VerticalAlignment="Center" />
+                    <TextBox x:Name="BaudTextBox" Width="85" Margin="0,0,12,0" Text="115200" VerticalContentAlignment="Center" />
+                    <Button Content="Refresh" Click="RefreshPortsButton_Click" Padding="10,4" Margin="0,0,12,0" />
+                    <TextBlock x:Name="ConnectionStatusTextBlock" Margin="0,0,12,0" VerticalAlignment="Center" Text="Disconnected" />
+                    <Button x:Name="ConnectButton" Content="Connect" Click="ConnectButton_Click" Padding="16,4" />
+                </WrapPanel>
+                <WrapPanel Margin="0,6,0,0" VerticalAlignment="Center">
+                    <Label Content="Parity" VerticalAlignment="Center" />
+                    <ComboBox x:Name="ParityComboBox" Width="95" Margin="0,0,12,0" SelectedIndex="0">
+                        <ComboBoxItem Content="None" Tag="None" />
+                        <ComboBoxItem Content="Odd" Tag="Odd" />
+                        <ComboBoxItem Content="Even" Tag="Even" />
+                        <ComboBoxItem Content="Mark" Tag="Mark" />
+                        <ComboBoxItem Content="Space" Tag="Space" />
+                    </ComboBox>
+                    <Label Content="Data bits" VerticalAlignment="Center" />
+                    <ComboBox x:Name="DataBitsComboBox" Width="60" Margin="0,0,12,0" SelectedIndex="3">
+                        <ComboBoxItem Content="5" Tag="5" />
+                        <ComboBoxItem Content="6" Tag="6" />
+                        <ComboBoxItem Content="7" Tag="7" />
+                        <ComboBoxItem Content="8" Tag="8" />
+                    </ComboBox>
+                    <Label Content="Stop bits" VerticalAlignment="Center" />
+                    <ComboBox x:Name="StopBitsComboBox" Width="105" Margin="0,0,12,0" SelectedIndex="0">
+                        <ComboBoxItem Content="1" Tag="One" />
+                        <ComboBoxItem Content="1.5" Tag="OnePointFive" />
+                        <ComboBoxItem Content="2" Tag="Two" />
+                    </ComboBox>
+                    <Label Content="Handshake" VerticalAlignment="Center" />
+                    <ComboBox x:Name="HandshakeComboBox" Width="190" SelectedIndex="0">
+                        <ComboBoxItem Content="None" Tag="None" />
+                        <ComboBoxItem Content="XOn/XOff" Tag="XOnXOff" />
+                        <ComboBoxItem Content="Request to send" Tag="RequestToSend" />
+                        <ComboBoxItem Content="RTS + XOn/XOff" Tag="RequestToSendXOnXOff" />
+                    </ComboBox>
+                    <Label Content="Read timeout (ms)" VerticalAlignment="Center" Margin="12,0,0,0" />
+                    <TextBox x:Name="ReadTimeoutTextBox" Width="75" Text="3000" VerticalContentAlignment="Center" />
+                </WrapPanel>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="1" Header="Scanner" Margin="0,12,0,0" Padding="10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Model: " FontWeight="Bold" />
+                <TextBlock x:Name="ModelTextBlock" Text="Unknown" Margin="4,0,24,0" />
+                <TextBlock Text="Firmware: " FontWeight="Bold" />
+                <TextBlock x:Name="FirmwareTextBlock" Text="Unknown" Margin="4,0,0,0" />
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="2" Header="Live Status" Margin="0,12,0,0" Padding="10">
+            <WrapPanel>
+                <TextBlock Text="Mode: " FontWeight="Bold" />
+                <TextBlock x:Name="ModeTextBlock" Text="Unknown" Margin="4,0,24,0" />
+                <TextBlock Text="Frequency: " FontWeight="Bold" />
+                <TextBlock x:Name="FrequencyTextBlock" Text="Unknown" Margin="4,0,24,0" />
+                <TextBlock Text="System: " FontWeight="Bold" />
+                <TextBlock x:Name="SystemTextBlock" Text="Unknown" Margin="4,0,24,0" />
+                <TextBlock Text="Department: " FontWeight="Bold" />
+                <TextBlock x:Name="DepartmentTextBlock" Text="Unknown" Margin="4,0,24,0" />
+                <TextBlock Text="Site: " FontWeight="Bold" />
+                <TextBlock x:Name="SiteTextBlock" Text="Unknown" Margin="4,0,24,0" />
+                <TextBlock Text="Channel: " FontWeight="Bold" />
+                <TextBlock x:Name="ChannelTextBlock" Text="Unknown" Margin="4,0,24,0" />
+                <TextBlock Text="Database: " FontWeight="Bold" />
+                <TextBlock x:Name="DatabaseCounterTextBlock" Text="Unknown" Margin="4,0,0,0" />
+            </WrapPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="3" Header="Scanner Levels" Margin="0,12,0,0" Padding="10">
+            <WrapPanel VerticalAlignment="Center">
+                <TextBlock Text="Volume" FontWeight="Bold" VerticalAlignment="Center" />
+                <Slider x:Name="VolumeSlider" Width="220" Margin="8,0,4,0" Minimum="0" Maximum="29" TickFrequency="1" IsSnapToTickEnabled="True" IsEnabled="False" ValueChanged="VolumeSlider_ValueChanged" />
+                <TextBlock x:Name="VolumeValueTextBlock" Text="Unknown" Width="28" VerticalAlignment="Center" Margin="0,0,24,0" />
+                <TextBlock Text="Squelch" FontWeight="Bold" VerticalAlignment="Center" />
+                <Slider x:Name="SquelchSlider" Width="180" Margin="8,0,4,0" Minimum="0" Maximum="19" TickFrequency="1" IsSnapToTickEnabled="True" IsEnabled="False" ValueChanged="SquelchSlider_ValueChanged" />
+                <TextBlock x:Name="SquelchValueTextBlock" Text="Unknown" Width="28" VerticalAlignment="Center" />
+            </WrapPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="4" Header="Scan Navigation" Margin="0,12,0,0" Padding="8">
+            <StackPanel>
+                <WrapPanel VerticalAlignment="Center">
+                    <Button x:Name="StartScanButton" Content="Start Scan" Padding="14,5" IsEnabled="False" Click="StartScanButton_Click" />
+                    <Button x:Name="PowerOffButton" Content="Power Off Scanner" Margin="8,0,16,0" Padding="14,5" IsEnabled="False" Click="PowerOffButton_Click" />
+                    <TextBlock Text="Target" VerticalAlignment="Center" />
+                    <TextBox x:Name="NavigationTargetTextBox" Width="100" Margin="6,0,8,0" ToolTip="Documented tkw target token" />
+                    <TextBlock Text="Tag 1" VerticalAlignment="Center" />
+                    <TextBox x:Name="NavigationFirstTagTextBox" Width="55" Margin="6,0,8,0" />
+                    <TextBlock Text="Tag 2" VerticalAlignment="Center" />
+                    <TextBox x:Name="NavigationSecondTagTextBox" Width="55" Margin="6,0,8,0" />
+                    <TextBlock Text="Count" VerticalAlignment="Center" />
+                    <TextBox x:Name="NavigationCountTextBox" Width="45" Text="1" Margin="6,0,10,0" />
+                </WrapPanel>
+                <WrapPanel Margin="0,8,0,0" VerticalAlignment="Center">
+                    <Button x:Name="HoldNavigationButton" Content="Hold" Padding="12,4" Margin="0,0,6,0" IsEnabled="False" Click="HoldNavigationButton_Click" />
+                    <Button x:Name="NextNavigationButton" Content="Next" Padding="12,4" Margin="0,0,6,0" IsEnabled="False" Click="NextNavigationButton_Click" />
+                    <Button x:Name="PreviousNavigationButton" Content="Previous" Padding="12,4" Margin="0,0,6,0" IsEnabled="False" Click="PreviousNavigationButton_Click" />
+                    <Button x:Name="JumpNavigationButton" Content="Jump to tags" Padding="12,4" Margin="0,0,12,0" IsEnabled="False" Click="JumpNavigationButton_Click" />
+                    <TextBlock x:Name="NavigationStatusTextBlock" Text="Disconnected" VerticalAlignment="Center" />
+                </WrapPanel>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="5" Header="Recording and Avoid" Margin="0,12,0,0" Padding="10">
+            <StackPanel>
+                <WrapPanel VerticalAlignment="Center">
+                    <TextBlock Text="Recording:" FontWeight="Bold" VerticalAlignment="Center" />
+                    <TextBlock x:Name="RecordingStatusTextBlock" Text="Unknown" Margin="8,0,20,0" VerticalAlignment="Center" />
+                    <Button x:Name="RefreshRecordingButton" Content="Refresh" Padding="12,4" Margin="0,0,8,0" IsEnabled="False" Click="RefreshRecordingButton_Click" />
+                    <Button x:Name="StartRecordingButton" Content="Start Recording" Padding="12,4" Margin="0,0,8,0" IsEnabled="False" Click="StartRecordingButton_Click" />
+                    <Button x:Name="StopRecordingButton" Content="Stop Recording" Padding="12,4" IsEnabled="False" Click="StopRecordingButton_Click" />
+                </WrapPanel>
+                <Separator Margin="0,8" />
+                <WrapPanel VerticalAlignment="Center">
+                    <TextBlock Text="Avoid target" FontWeight="Bold" VerticalAlignment="Center" />
+                    <TextBox x:Name="AvoidTargetTextBox" Width="100" Margin="8,0,8,0" ToolTip="AVD target token (tkw)" />
+                    <TextBox x:Name="AvoidFirstTagTextBox" Width="60" Margin="0,0,8,0" ToolTip="First target tag (xxx1)" />
+                    <TextBox x:Name="AvoidSecondTagTextBox" Width="60" Margin="0,0,12,0" ToolTip="Second target tag (xxx2)" />
+                    <ComboBox x:Name="AvoidActionComboBox" Width="150" Margin="0,0,8,0" SelectedIndex="0">
+                        <ComboBoxItem Content="Permanent avoid" Tag="1" />
+                        <ComboBoxItem Content="Temporary avoid" Tag="2" />
+                        <ComboBoxItem Content="Remove avoid" Tag="3" />
+                    </ComboBox>
+                    <Button x:Name="ApplyAvoidButton" Content="Apply" Padding="12,4" IsEnabled="False" Click="ApplyAvoidButton_Click" />
+                    <TextBlock x:Name="AvoidStatusTextBlock" Text="" VerticalAlignment="Center" Margin="12,0,0,0" />
+                </WrapPanel>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="6" Header="Quick Keys" Margin="0,12,0,0" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Favorites List" FontWeight="Bold" Margin="0,0,0,6" />
+                <WrapPanel VerticalAlignment="Center">
+                    <TextBlock Text="Slot" VerticalAlignment="Center" />
+                    <ComboBox x:Name="FavoritesListQuickKeyComboBox" Width="75" Margin="8,0,16,0" IsEnabled="False" SelectionChanged="FavoritesListQuickKeyComboBox_SelectionChanged" />
+                    <TextBlock Text="State" VerticalAlignment="Center" />
+                    <ComboBox x:Name="FavoritesListQuickKeyStatusComboBox" Width="150" Margin="8,0,16,0" IsEnabled="False" SelectedIndex="0">
+                        <ComboBoxItem Content="Does not exist" Tag="0" />
+                        <ComboBoxItem Content="Disabled" Tag="1" />
+                        <ComboBoxItem Content="Enabled" Tag="2" />
+                    </ComboBox>
+                    <Button x:Name="RefreshQuickKeysButton" Content="Refresh" Padding="12,4" Margin="0,0,8,0" IsEnabled="False" Click="RefreshQuickKeysButton_Click" />
+                    <Button x:Name="ApplyQuickKeyButton" Content="Apply" Padding="12,4" IsEnabled="False" Click="ApplyQuickKeyButton_Click" />
+                </WrapPanel>
+                <Separator Margin="0,8" />
+                <TextBlock Text="System and Department" FontWeight="Bold" Margin="0,0,0,6" />
+                <WrapPanel VerticalAlignment="Center">
+                    <ComboBox x:Name="HierarchicalQuickKeyTypeComboBox" Width="115" Margin="0,0,8,0" SelectedIndex="0" SelectionChanged="HierarchicalQuickKeyTypeComboBox_SelectionChanged">
+                        <ComboBoxItem Content="System" Tag="SQK" />
+                        <ComboBoxItem Content="Department" Tag="DQK" />
+                    </ComboBox>
+                    <TextBlock Text="FL QK" VerticalAlignment="Center" />
+                    <TextBox x:Name="HierarchicalFavoritesListIndexTextBox" Width="50" Text="0" Margin="6,0,10,0" VerticalContentAlignment="Center" />
+                    <TextBlock Text="System QK" VerticalAlignment="Center" />
+                    <TextBox x:Name="HierarchicalSystemIndexTextBox" Width="50" Text="0" Margin="6,0,10,0" VerticalContentAlignment="Center" IsEnabled="False" />
+                    <TextBlock Text="Slot" VerticalAlignment="Center" />
+                    <ComboBox x:Name="HierarchicalQuickKeySlotComboBox" Width="65" Margin="6,0,10,0" IsEnabled="False" />
+                    <ComboBox x:Name="HierarchicalQuickKeyStatusComboBox" Width="135" Margin="0,0,8,0" IsEnabled="False" SelectedIndex="0">
+                        <ComboBoxItem Content="Does not exist" />
+                        <ComboBoxItem Content="Disabled" />
+                        <ComboBoxItem Content="Enabled" />
+                    </ComboBox>
+                    <Button x:Name="RefreshHierarchicalQuickKeysButton" Content="Refresh" Padding="10,4" Margin="0,0,6,0" IsEnabled="False" Click="RefreshHierarchicalQuickKeysButton_Click" />
+                    <Button x:Name="ApplyHierarchicalQuickKeyButton" Content="Apply" Padding="10,4" IsEnabled="False" Click="ApplyHierarchicalQuickKeyButton_Click" />
+                    <TextBlock x:Name="HierarchicalQuickKeyStatusTextBlock" Text="Not loaded" VerticalAlignment="Center" Margin="10,0,0,0" />
+                </WrapPanel>
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Grid.Row="7" Header="Favorites Lists" Margin="0,12,0,0" Padding="10">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
+                    <ComboBox x:Name="GltTypeComboBox" Width="170" Margin="0,0,8,0" SelectedIndex="0" SelectionChanged="GltTypeComboBox_SelectionChanged">
+                        <ComboBoxItem Content="Favorites Lists" Tag="FL" />
+                        <ComboBoxItem Content="Systems" Tag="SYS" />
+                        <ComboBoxItem Content="Departments" Tag="DEPT" />
+                        <ComboBoxItem Content="Sites" Tag="SITE" />
+                        <ComboBoxItem Content="Conventional Frequencies" Tag="CFREQ" />
+                        <ComboBoxItem Content="Talkgroups" Tag="TGID" />
+                        <ComboBoxItem Content="Site Frequencies" Tag="SFREQ" />
+                    </ComboBox>
+                    <TextBlock Text="Parent index" VerticalAlignment="Center" Margin="0,0,6,0" />
+                    <TextBox x:Name="GltParentIndexTextBox" Width="55" Text="0" Margin="0,0,8,0" VerticalContentAlignment="Center" IsEnabled="False" />
+                    <Button x:Name="RefreshFavoritesListsButton" Content="Load" HorizontalAlignment="Left" Padding="12,4" IsEnabled="False" Click="RefreshFavoritesListsButton_Click" />
+                    <TextBlock x:Name="FavoritesListsStatusTextBlock" Text="Not loaded" VerticalAlignment="Center" Margin="12,0,0,0" />
+                </StackPanel>
+                <TreeView x:Name="FavoritesListsTreeView" />
+            </DockPanel>
+        </GroupBox>
+
+        <DockPanel Grid.Row="8" Margin="0,16,0,6">
+            <Button DockPanel.Dock="Right" Content="Export" Padding="10,3" Margin="6,0,0,0" Click="ExportLogButton_Click" />
+            <Button DockPanel.Dock="Right" Content="Copy" Padding="10,3" Margin="6,0,0,0" Click="CopyLogButton_Click" />
+            <CheckBox x:Name="FileLoggingCheckBox" DockPanel.Dock="Right" Content="File logging" IsChecked="True" VerticalAlignment="Center" Margin="8,0,0,0" Checked="FileLoggingCheckBox_Changed" Unchecked="FileLoggingCheckBox_Changed" />
+            <CheckBox x:Name="RawTrafficCheckBox" DockPanel.Dock="Right" Content="Raw TX/RX" VerticalAlignment="Center" Margin="8,0,0,0" Checked="RawTrafficCheckBox_Changed" Unchecked="RawTrafficCheckBox_Changed" />
+            <ComboBox x:Name="LogCaptureLevelComboBox" DockPanel.Dock="Right" Width="110" Margin="8,0,0,0" SelectedIndex="5" SelectionChanged="LogCaptureLevelComboBox_SelectionChanged">
+                <ComboBoxItem Content="Off" Tag="Off" />
+                <ComboBoxItem Content="Error" Tag="Error" />
+                <ComboBoxItem Content="Warning" Tag="Warning" />
+                <ComboBoxItem Content="Info" Tag="Info" />
+                <ComboBoxItem Content="Debug" Tag="Debug" />
+                <ComboBoxItem Content="Trace" Tag="Trace" />
+            </ComboBox>
+            <ComboBox x:Name="LogFilterComboBox" DockPanel.Dock="Right" Width="110" Margin="8,0,0,0" SelectedIndex="0" SelectionChanged="LogFilterComboBox_SelectionChanged">
+                <ComboBoxItem Content="All levels" />
+                <ComboBoxItem Content="Error" />
+                <ComboBoxItem Content="Warning" />
+                <ComboBoxItem Content="Info" />
+                <ComboBoxItem Content="Debug" />
+                <ComboBoxItem Content="Trace" />
+            </ComboBox>
+            <TextBlock Text="Debug Log" FontWeight="Bold" VerticalAlignment="Center" />
+        </DockPanel>
+        <ListBox x:Name="LogListBox" Grid.Row="9" FontFamily="Consolas" />
+    </Grid>
+</Window>

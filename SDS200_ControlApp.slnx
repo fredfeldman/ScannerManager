@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/SDS200_ControlApp.Domain/SDS200_ControlApp.Domain.csproj" />
+    <Project Path="src/SDS200_ControlApp.Protocol/SDS200_ControlApp.Protocol.csproj" />
+    <Project Path="src/SDS200_ControlApp.Serial/SDS200_ControlApp.Serial.csproj" />
+    <Project Path="src/SDS200_ControlApp/SDS200_ControlApp.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SDS200_ControlApp.Protocol.Tests/SDS200_ControlApp.Protocol.Tests.csproj" />
+    <Project Path="tests/SDS200_ControlApp.Serial.Tests/SDS200_ControlApp.Serial.Tests.csproj" />
+  </Folder>
+</Solution>

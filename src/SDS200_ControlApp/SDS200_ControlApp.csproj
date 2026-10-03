@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SDS200_ControlApp.Domain\SDS200_ControlApp.Domain.csproj" />
+    <ProjectReference Include="..\SDS200_ControlApp.Protocol\SDS200_ControlApp.Protocol.csproj" />
+    <ProjectReference Include="..\SDS200_ControlApp.Serial\SDS200_ControlApp.Serial.csproj" />
+  </ItemGroup>
+
+</Project>
